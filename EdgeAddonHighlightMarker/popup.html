@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      width: 260px;
+      min-height: 100px;
+    }
+
+    .popup-header {
+      background: linear-gradient(135deg, #1a1d27, #162e1e);
+      padding: 14px 16px;
+      border-bottom: 1px solid #2d5232;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .popup-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #3ba55d, #2d8049);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .popup-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .popup-sub {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 1px;
+    }
+
+    .popup-body {
+      padding: 16px;
+    }
+
+    .usage-hint {
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.7;
+      background: #1a1d27;
+      border: 1px solid #2d5232;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+    }
+
+    .usage-hint strong {
+      color: #6ee7a0;
+    }
+
+    .presets-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .preset-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid #2d5232;
+      background: #1a1d27;
+    }
+
+    .preset-badge-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .preset-badge-name {
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+
+    .btn-open-options {
+      width: 100%;
+      padding: 9px;
+      background: #3ba55d;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-open-options:hover {
+      background: #6ee7a0;
+      color: #1a1d27;
+    }
+  </style>
+</head>
+<body>
+  <div class="popup-header">
+    <div class="popup-icon">🖊️</div>
+    <div>
+      <div class="popup-title">ハイライトマーカー</div>
+      <div class="popup-sub">テキスト強調表示 <span id="ver" style="font-family:monospace;font-size:10px;background:rgba(59,165,93,0.2);color:#6ee7a0;border-radius:8px;padding:1px 6px;margin-left:4px"></span></div>
+    </div>
+  </div>
+  <div class="popup-body">
+    <div class="usage-hint">
+      テキストを<strong>選択 → 右クリック</strong>で<br>ハイライトプリセットを適用
+    </div>
+    <div class="presets-list" id="presetsList"></div>
+    <button class="btn-open-options" id="openOptions">⚙️ 設定を開く</button>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

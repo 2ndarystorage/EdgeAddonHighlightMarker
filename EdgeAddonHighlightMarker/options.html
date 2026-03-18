@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ハイライトマーカー - 設定</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --bg: #0f1117;
+      --bg2: #1a1d27;
+      --bg3: #22263a;
+      --accent: #3ba55d;
+      --accent2: #6ee7a0;
+      --border: #2d5232;
+      --text: #e2e8f0;
+      --text2: #94a3b8;
+      --red: #f87171;
+      --green: #4ade80;
+      --yellow: #fbbf24;
+      --card-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #1a1d27 0%, #162e1e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--accent), #2d8049);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 0 20px rgba(59, 165, 93, 0.4);
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 3px;
+    }
+
+    .header p {
+      font-size: 12px;
+      color: var(--text2);
+    }
+
+    .version-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: rgba(59,165,93,0.18);
+      color: var(--accent2);
+      border: 1px solid rgba(59,165,93,0.35);
+      border-radius: 20px;
+      padding: 2px 9px;
+      letter-spacing: 0.5px;
+    }
+
+    .edge-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      background: rgba(0,120,212,0.18);
+      color: #60a5fa;
+      border: 1px solid rgba(0,120,212,0.35);
+      border-radius: 20px;
+      padding: 2px 9px;
+      letter-spacing: 0.5px;
+    }
+
+    .header-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Main layout */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 40px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent2);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ===== 登録文字列セクション ===== */
+    .strings-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+
+    .strings-desc {
+      font-size: 13px;
+      color: var(--text2);
+      margin-bottom: 18px;
+      line-height: 1.7;
+    }
+
+    .strings-desc strong { color: var(--accent2); }
+
+    .strings-add-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .strings-text-input {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 14px;
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 14px;
+      flex: 1;
+      min-width: 160px;
+      transition: border-color 0.2s;
+    }
+    .strings-text-input:focus { outline: none; border-color: var(--accent); }
+    .strings-text-input::placeholder { color: #4a5568; }
+
+    .preset-select {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 12px;
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      min-width: 160px;
+    }
+    .preset-select:focus { outline: none; border-color: var(--accent); }
+
+    .strings-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .strings-table thead th {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text2);
+      padding: 0 12px 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .strings-table tbody tr {
+      border-bottom: 1px solid rgba(45,82,50,0.5);
+      transition: background 0.15s;
+    }
+
+    .strings-table tbody tr:last-child { border-bottom: none; }
+    .strings-table tbody tr:hover { background: rgba(59,165,93,0.05); }
+
+    .strings-table td {
+      padding: 11px 12px;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    .string-text-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .string-preview-cell .str-preview {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .string-case-cell {
+      color: var(--text2);
+      font-size: 12px;
+    }
+
+    .case-badge {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-size: 11px;
+      color: var(--text2);
+    }
+
+    .case-badge.cs {
+      background: rgba(251,191,36,0.1);
+      border-color: rgba(251,191,36,0.3);
+      color: var(--yellow);
+    }
+
+    .strings-empty {
+      text-align: center;
+      padding: 24px;
+      color: #4a5568;
+      font-size: 13px;
+    }
+
+    /* Preset list */
+    .presets-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .preset-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: start;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .preset-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(59,165,93,0.2), var(--card-shadow);
+    }
+
+    .preset-card.collapsed .preset-body { display: none; }
+
+    .preset-number {
+      width: 32px; height: 32px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; color: var(--text2); font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .preset-header {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+
+    .preset-name-input {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+      padding: 7px 12px; color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: 500;
+      width: 180px; transition: border-color 0.2s;
+    }
+    .preset-name-input:focus { outline: none; border-color: var(--accent); }
+
+    .emoji-input {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+      padding: 7px 10px; color: var(--text);
+      font-size: 18px; width: 56px; text-align: center; transition: border-color 0.2s;
+    }
+    .emoji-input:focus { outline: none; border-color: var(--accent); }
+
+    .preset-preview {
+      padding: 6px 14px; border-radius: 6px;
+      font-size: 13px; font-weight: 500; white-space: nowrap;
+    }
+
+    .preset-body {
+      grid-column: 2 / 3;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px; margin-top: 14px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+    .form-label {
+      font-size: 11px; color: var(--text2); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.8px;
+    }
+
+    .color-row { display: flex; align-items: center; gap: 8px; }
+
+    input[type="color"] {
+      width: 36px; height: 36px; padding: 2px;
+      border: 1px solid var(--border); border-radius: 8px;
+      background: var(--bg3); cursor: pointer; flex-shrink: 0;
+    }
+
+    .color-hex {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+      padding: 6px 10px; color: var(--text);
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; width: 90px;
+      transition: border-color 0.2s;
+    }
+    .color-hex:focus { outline: none; border-color: var(--accent); }
+
+    .toggles-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    .toggle-chip {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 20px;
+      padding: 5px 12px; cursor: pointer; font-size: 12px; color: var(--text2);
+      transition: all 0.2s; user-select: none;
+    }
+    .toggle-chip input[type="checkbox"] { display: none; }
+    .toggle-chip.active { background: rgba(59,165,93,0.15); border-color: var(--accent); color: var(--accent2); }
+    .toggle-chip .chip-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background 0.2s; }
+    .toggle-chip.active .chip-dot { background: var(--accent); }
+
+    .preset-controls { display: flex; gap: 8px; flex-shrink: 0; }
+
+    /* Buttons */
+    .btn {
+      padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 600;
+      transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+    }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: var(--accent2); color: #1a1d27; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,165,93,0.4); }
+    .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent2); }
+    .btn-icon {
+      width: 32px; height: 32px; padding: 0; justify-content: center;
+      border-radius: 8px; background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text2); font-size: 15px; cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center;
+    }
+    .btn-icon:hover { border-color: var(--red); color: var(--red); }
+    .btn-collapse {
+      width: 32px; height: 32px; padding: 0; justify-content: center;
+      border-radius: 8px; background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text2); font-size: 11px; cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center;
+    }
+    .btn-collapse:hover { border-color: var(--accent); color: var(--accent2); }
+
+    .add-preset-btn {
+      background: var(--bg2); border: 2px dashed var(--border);
+      border-radius: 14px; padding: 16px; width: 100%; cursor: pointer;
+      color: var(--text2); font-family: 'Noto Sans JP', sans-serif; font-size: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;
+    }
+    .add-preset-btn:hover { border-color: var(--accent); color: var(--accent2); background: rgba(59,165,93,0.05); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 32px; right: 32px;
+      background: var(--bg2); border: 1px solid var(--green);
+      border-radius: 12px; padding: 12px 20px;
+      color: var(--green); font-size: 14px; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* Usage guide */
+    .guide-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 32px; }
+    .guide-steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 16px; }
+    .guide-step { display: flex; gap: 12px; align-items: flex-start; }
+    .step-num { width: 28px; height: 28px; background: linear-gradient(135deg, var(--accent), #2d8049); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; color: white; }
+    .step-text { font-size: 13px; color: var(--text2); line-height: 1.6; padding-top: 3px; }
+
+    @keyframes preview-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
+    .blink-preview { animation: preview-blink 1s ease-in-out infinite; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">🖊️</div>
+  <div>
+    <h1>ハイライトマーカー</h1>
+    <div class="header-meta">
+      <p>テキスト強調表示の設定</p>
+      <span class="version-badge" id="versionBadge">v1.0.0</span>
+      <span class="edge-badge">Edge Addon</span>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-secondary" id="resetBtn">↺ デフォルトに戻す</button>
+    <button class="btn btn-primary" id="saveBtn">💾 保存</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 使い方 -->
+  <div class="section-title">📖 使い方</div>
+  <div class="guide-card">
+    <div class="guide-steps">
+      <div class="guide-step">
+        <div class="step-num">1</div>
+        <div class="step-text">Webページで強調したいテキストを<strong>ドラッグして選択</strong></div>
+      </div>
+      <div class="guide-step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>右クリック</strong>して「🖊️ ハイライトマーカー」を選択</div>
+      </div>
+      <div class="guide-step">
+        <div class="step-num">3</div>
+        <div class="step-text">適用したい<strong>プリセット</strong>をクリック</div>
+      </div>
+      <div class="guide-step">
+        <div class="step-num">4</div>
+        <div class="step-text">下の<strong>登録文字列</strong>に追加するとページロード時に自動強調</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 登録文字列 -->
+  <div class="section-title">📌 登録文字列（自動ハイライト）</div>
+  <div class="strings-card">
+    <div class="strings-desc">
+      ここに登録した文字列は、<strong>すべてのページをロードするたびに自動で強調表示</strong>されます。<br>
+      別のページに移動しても同じ文字列があれば自動適用されます。設定を保存すると即座に反映されます。
+    </div>
+    <div class="strings-add-row">
+      <input type="text" class="strings-text-input" id="newStringText" placeholder="強調したい文字列を入力…" />
+      <select class="preset-select" id="newStringPreset"></select>
+      <label class="toggle-chip" id="caseChip">
+        <input type="checkbox" id="newStringCase">
+        <span class="chip-dot"></span> 大文字小文字を区別
+      </label>
+      <button class="btn btn-primary" id="addStringBtn">＋ 追加</button>
+    </div>
+    <table class="strings-table">
+      <thead>
+        <tr>
+          <th style="width:36%">文字列</th>
+          <th style="width:28%">プリセット</th>
+          <th style="width:16%">オプション</th>
+          <th style="width:20%"></th>
+        </tr>
+      </thead>
+      <tbody id="stringsTableBody">
+        <tr><td colspan="4" class="strings-empty">登録されている文字列はありません</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- プリセット -->
+  <div class="section-title">🖊️ ハイライトプリセット</div>
+  <div class="presets-grid" id="presetsGrid"></div>
+
+  <button class="add-preset-btn" id="addPresetBtn">
+    ＋ 新しいプリセットを追加
+  </button>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">✅ 設定を保存しました</div>
+
+<script src="options.js"></script>
+</body>
+</html>

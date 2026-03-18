@@ -1,0 +1,67 @@
+/* highlight.css - ハイライト用スタイル (Edge Addon) */
+
+@keyframes edge-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+@keyframes edge-blink-bg {
+  0%, 100% { background-color: var(--eh-bg-color); }
+  50% { background-color: transparent; }
+}
+
+.edge-highlight {
+  display: inline;
+  border-radius: 3px;
+  padding: 1px 3px;
+  cursor: pointer;
+  position: relative;
+  transition: filter 0.2s ease;
+}
+
+.edge-highlight:hover {
+  filter: brightness(0.85);
+}
+
+.edge-highlight:hover::after {
+  content: "✕";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #333;
+  color: white;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 14px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 9999;
+}
+
+.edge-highlight.blink {
+  animation: edge-blink 1s ease-in-out infinite;
+}
+
+.edge-highlight-tooltip {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 99999;
+  white-space: nowrap;
+  font-family: system-ui, sans-serif;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.edge-highlight-tooltip.visible {
+  opacity: 1;
+}
